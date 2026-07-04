@@ -5,12 +5,12 @@
     <title>Bootstrap 5 Website Example</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Bootstrap 5 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <style>
         .fakeimg {
@@ -24,8 +24,8 @@
 
     <!-- Header -->
     <div class="p-5 bg-primary text-white text-center">
-        <h1>My First Bootstrap 5 Page</h1>
-        <p>Resize this responsive page to see the effect!</p>
+        <h1>Ajax Laravel Crud</h1>
+
     </div>
 
     <!-- Navbar -->
@@ -55,9 +55,7 @@
             <h2>Student List</h2>
 
             <!-- Button to Open Modal -->
-            <button type="button" class="btn btn-success"
-                data-bs-toggle="modal"
-                data-bs-target="#myModal">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal">
                 New Student
             </button>
         </div>
@@ -65,34 +63,28 @@
         <table class="table table-bordered table-hover">
             <thead class="table-dark">
                 <tr>
-                    <th>#</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
+                    <th>Id</th>
+                    <th>Name</th>
                     <th>Email</th>
+                    <th>Address</th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>mark@gmail.com</td>
-                </tr>
+                @foreach ($students as $student)
+                    <tr>
 
-                <tr>
-                    <td>2</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>jacob@gmail.com</td>
-                </tr>
+                        <td>{{ $student->id }}</td>
+                        <td>{{ $student->name }}</td>
+                        <td>{{ $student->email }}</td>
+                        <td>{{ $student->address }}</td>
 
-                <tr>
-                    <td>3</td>
-                    <td>John</td>
-                    <td>Doe</td>
-                    <td>john@gmail.com</td>
-                </tr>
+                    </tr>
+                @endforeach
+
+
+
+
             </tbody>
         </table>
 
@@ -102,8 +94,15 @@
     <div class="mt-5 p-4 bg-dark text-white text-center">
         <p>Footer</p>
     </div>
-@include('entry')
-    
+    @include('entry')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            alert("Student saved");
+        });
+    </script>
 
 </body>
 
