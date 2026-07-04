@@ -95,14 +95,53 @@
         <p>Footer</p>
     </div>
     @include('entry')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+   
+
 
     <script>
-        $(document).ready(function() {
-            alert("Student saved");
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $(document).ready(function () {
+
+        $(document).on('submit', '#StudentEntry', function (e) {
+            e.preventDefault();
+
+            let Mydata = new FormData(this);
+
+            $.ajax({
+                url: "{{ route('student.store') }}",
+                method: "POST",
+                data: Mydata,
+                processData: false,
+                contentType: false,
+
+                success: function (response) {
+                    console.log(response);
+                },
+
+                error: function (err) {
+                    let errors = err.responseJSON.errors;
+
+                    $.each(errors, function (key, value) {
+                        $('.' + key + '_error').text(value[0]);
+                    });
+                }
+            });
+
         });
-    </script>
+
+    });
+</script>
+
+
+
 
 </body>
 

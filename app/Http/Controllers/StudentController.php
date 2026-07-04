@@ -11,4 +11,27 @@ class StudentController extends Controller
         $students =Student::all();
         return view('index',compact('students'));
     }
+
+   public function store(Request $request){
+
+   $request->validate([
+    'name'=>'required',
+    'email'=>'required',
+    'address'=>'min:3'
+   ]);
+
+    $student = new Student();
+
+    $student->name = $request->name;
+    $student->email = $request->email;
+    $student->address = $request->address;
+    $student->save();
+
+    return redirect('/student');
+
+   
 }
+}
+
+
+
