@@ -16,7 +16,7 @@ class StudentController extends Controller
 
    $request->validate([
     'name'=>'required',
-    'email'=>'required',
+    'email'=>'required|email',
     'address'=>'min:3'
    ]);
 
