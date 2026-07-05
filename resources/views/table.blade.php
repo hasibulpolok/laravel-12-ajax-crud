@@ -12,25 +12,23 @@
 
     <tbody>
 
-        @foreach($students as $student)
+        @foreach ($students as $student)
+            <tr>
+                <td>{{ $student->id }}</td>
+                <td>{{ $student->name }}</td>
+                <td>{{ $student->email }}</td>
+                <td>{{ $student->address }}</td>
 
-        <tr>
-            <td>{{ $student->id }}</td>
-            <td>{{ $student->name }}</td>
-            <td>{{ $student->email }}</td>
-            <td>{{ $student->address }}</td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm editStudent" data-id="{{ $student->id }}">
+                        Edit
+                    </button>
 
-            <td>
-                <button type="button" class="btn btn-primary btn-sm">
-                    Edit
-                </button>
-
-                <button type="button" class="btn btn-danger btn-sm">
-                    Delete
-                </button>
-            </td>
-        </tr>
-
+                    <button type="button" class="btn btn-danger btn-sm deleteStudent" data-id="{{ $student->id }}">
+                        Delete
+                    </button>
+                </td>
+            </tr>
         @endforeach
 
     </tbody>

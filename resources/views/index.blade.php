@@ -50,10 +50,7 @@
 
             <h2>Student List</h2>
 
-            <button type="button"
-                    class="btn btn-success"
-                    data-bs-toggle="modal"
-                    data-bs-target="#myModal">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#myModal">
                 New Student
             </button>
 
@@ -69,21 +66,21 @@
     </div>
 
     @include('entry')
+    @include('edit')
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
-        $(document).ready(function () {
+        $(document).ready(function() {
 
-            $("#StudentEntry").submit(function (e) {
+            $("#StudentEntry").submit(function(e) {
 
                 e.preventDefault();
 
@@ -101,7 +98,7 @@
                     processData: false,
                     contentType: false,
 
-                    success: function (response) {
+                    success: function(response) {
 
                         $("#saveStudent").prop("disabled", false).text("Save Student");
 
@@ -116,15 +113,16 @@
 
                         $(".error_text").text("");
 
-                        bootstrap.Modal.getOrCreateInstance(document.getElementById('myModal')).hide();
+                        bootstrap.Modal.getOrCreateInstance(document.getElementById('myModal'))
+                            .hide();
 
-                        setTimeout(function () {
+                        setTimeout(function() {
                             location.reload();
                         }, 1000);
 
                     },
 
-                    error: function (xhr) {
+                    error: function(xhr) {
 
                         $("#saveStudent").prop("disabled", false).text("Save Student");
 
@@ -132,7 +130,7 @@
 
                         if (xhr.status == 422) {
 
-                            $.each(xhr.responseJSON.errors, function (key, value) {
+                            $.each(xhr.responseJSON.errors, function(key, value) {
 
                                 $("." + key + "_error").text(value[0]);
 
@@ -147,7 +145,6 @@
             });
 
         });
-
     </script>
 
 </body>
