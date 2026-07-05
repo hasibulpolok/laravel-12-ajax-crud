@@ -2,142 +2,154 @@
 <html lang="en">
 
 <head>
-    <title>Laravel AJAX CRUD</title>
+    <title>Bootstrap 5 Website Example</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-
 </head>
 
 <body>
 
-<div class="p-5 bg-primary text-white text-center">
-    <h2>Laravel AJAX CRUD</h2>
-</div>
-
-<div class="container mt-5">
-
-    <div id="successMessage"></div>
-
-    <div class="d-flex justify-content-between mb-3">
-        <h3>Student List</h3>
-
-        <button class="btn btn-success"
-                data-bs-toggle="modal"
-                data-bs-target="#myModal">
-            New Student
-        </button>
+    <!-- Header -->
+    <div class="p-5 bg-primary text-white text-center">
+        <h1>Ajax Laravel CRUD</h1>
     </div>
 
- @include('table')
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Home</a>
+                </li>
 
-</div>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Student</a>
+                </li>
 
-@include('entry')
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Content -->
+    <div class="container mt-5">
 
-<script>
+        <div id="successMessage"></div>
 
-$.ajaxSetup({
+        <div class="d-flex justify-content-between align-items-center mb-3">
 
-    headers:{
-        'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-    }
+            <h2>Student List</h2>
 
-});
+            <button type="button"
+                    class="btn btn-success"
+                    data-bs-toggle="modal"
+                    data-bs-target="#myModal">
+                New Student
+            </button>
 
-$(document).ready(function(){
+        </div>
 
-    $("#StudentEntry").submit(function(e){
+        @include('table')
 
-        e.preventDefault();
+    </div>
 
-        $(".error_text").text("");
+    <!-- Footer -->
+    <div class="mt-5 p-4 bg-dark text-white text-center">
+        <p>Footer</p>
+    </div>
 
-        $("#saveStudent")
-            .prop("disabled",true)
-            .text("Saving...");
+    @include('entry')
 
-        let formData = new FormData(this);
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
-        $.ajax({
+    <script>
 
-            url:"{{ route('student.store') }}",
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
-            type:"POST",
+        $(document).ready(function () {
 
-            data:formData,
+            $("#StudentEntry").submit(function (e) {
 
-            processData:false,
-
-            contentType:false,
-
-            success:function(response){
-
-                $("#saveStudent")
-                    .prop("disabled",false)
-                    .text("Save Student");
-
-                $("#successMessage").html(
-
-                    `<div class="alert alert-success alert-dismissible fade show">
-
-                        ${response.msg}
-
-                        <button class="btn-close"
-                                data-bs-dismiss="alert"></button>
-
-                    </div>`
-
-                );
-
-                $("#StudentEntry")[0].reset();
+                e.preventDefault();
 
                 $(".error_text").text("");
 
-                bootstrap.Modal.getInstance(
-                    document.getElementById('myModal')
-                ).hide();
+                $("#saveStudent").prop("disabled", true).text("Saving...");
 
-                setTimeout(function(){
+                let formData = new FormData(this);
 
-                    location.reload();
+                $.ajax({
 
-                },500);
+                    url: "{{ route('student.store') }}",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
 
-            },
+                    success: function (response) {
 
-            error:function(xhr){
+                        $("#saveStudent").prop("disabled", false).text("Save Student");
 
-                $("#saveStudent")
-                    .prop("disabled",false)
-                    .text("Save Student");
+                        $("#successMessage").html(`
+                            <div class="alert alert-success alert-dismissible fade show">
+                                ${response.msg}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        `);
 
-                if(xhr.status==422){
+                        $("#StudentEntry")[0].reset();
 
-                    $.each(xhr.responseJSON.errors,function(key,value){
+                        $(".error_text").text("");
 
-                        $("."+key+"_error").text(value[0]);
+                        bootstrap.Modal.getOrCreateInstance(document.getElementById('myModal')).hide();
 
-                    });
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
 
-                }
+                    },
 
-            }
+                    error: function (xhr) {
+
+                        $("#saveStudent").prop("disabled", false).text("Save Student");
+
+                        $(".error_text").text("");
+
+                        if (xhr.status == 422) {
+
+                            $.each(xhr.responseJSON.errors, function (key, value) {
+
+                                $("." + key + "_error").text(value[0]);
+
+                            });
+
+                        }
+
+                    }
+
+                });
+
+            });
 
         });
 
-    });
-
-});
-
-</script>
+    </script>
 
 </body>
+
 </html>
